@@ -14,6 +14,7 @@ type
     sbZoomIn: TSpeedButton;
     sbZoomOut: TSpeedButton;
     lbZoomInfo: TLabel;
+    tbZoom: TTrackBar;
     procedure FormCreate(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char;
       Shift: TShiftState);
@@ -27,6 +28,7 @@ type
       WheelDelta: Integer; var Handled: Boolean);
     procedure sbZoomInClick(Sender: TObject);
     procedure sbZoomOutClick(Sender: TObject);
+    procedure tbZoomChange(Sender: TObject);
   private
     { Private declarations }
     FScalePicture: Single;
@@ -110,6 +112,7 @@ begin
     FScalePicture := SW;
   ScalePicture := FScalePicture;
   FLastScale := FScalePicture;
+  tbZoom.Value := ScalePicture;
   lbZoomInfo.Text := 'Zoom: ' + FloatToStrF(FScalePicture * 100, ffFixed, 4, 0) + '%';
 end;
 
@@ -261,6 +264,7 @@ begin
           if FScalePicture > 10 then
             FScalePicture := 10;
           lbZoomInfo.Text := 'Zoom: ' + FloatToStrF(FScalePicture * 100, ffFixed, 4, 0) + '%';
+          tbZoom.Value := FScalePicture;
           S := FScalePicture / S;
           ivImageViewer.AniCalculations.Animation := False;
           ivImageViewer.BeginUpdate;
@@ -280,6 +284,11 @@ begin
           ivImageViewer.Repaint;
         end;
     end;
+end;
+
+procedure TfmMain.tbZoomChange(Sender: TObject);
+begin
+  ScalePicture := tbZoom.Value;
 end;
 
 end.
